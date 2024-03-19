@@ -1,4 +1,4 @@
-const sequelize = require("./database");
+const sequelize = require("../db/database");
 
 async function connectDB() {
     try {
