@@ -1,8 +1,8 @@
-const sequelize = require("../db/database");
+const db = require("../models");
 
 async function connectDB() {
     try {
-        await sequelize.authenticate();
+        await db.authenticate();
         console.log('db conectado');
     } catch (error) {
         console.error('erro na conexão db:', error);
