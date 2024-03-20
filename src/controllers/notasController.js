@@ -61,6 +61,26 @@ async function deleteNota(req, res){
   }
 }
 
+async function deleteNota(req, res){
+  try {
+    const { id } = req.params;
+
+    const nota = await Notas.destroy({
+      where: {
+        id: id
+      }
+    });  
+
+    if(!nota){
+      return res.status(404).json({mensage: "Nota Not found!"});
+    }
+    
+    return res.status(204).send();
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+}
+
 module.exports = {
   registerNota,
   getAllNotas,
