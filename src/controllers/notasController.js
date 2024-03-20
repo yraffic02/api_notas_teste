@@ -17,8 +17,6 @@ async function registerNota(req, res){
 
 async function getAllNotas(req, res){
   try {
-    const { titulo, conteudo } = req.body;
-
     const notas = await Notas.findAll();  
 
     return res.status(200).json(notas);
@@ -31,13 +29,13 @@ async function getNota(req, res){
   try {
     const { id } = req.params;
 
-    const nota = await Notas.findOne({ where: { id: id} });  
+    const nota = await Notas.findOne({ where: { id: Number(id)} });  
 
     if(!nota){
       return res.status(404).json({mensage: "Nota Not found!"});
     }
 
-    return res.status(200).json(novaNota);
+    return res.status(200).json(nota);
   } catch (err) {
     return res.status(500).json(err);
   }
