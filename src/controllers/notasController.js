@@ -41,21 +41,29 @@ async function getNota(req, res){
   }
 }
 
-async function deleteNota(req, res){
+async function updateNota(req, res){
   try {
     const { id } = req.params;
+    const { titulo, conteudo } = req.body;
 
-    const nota = await Notas.destroy({
+    const nota = await Notas.findByPk(id);  
+
+    if(!nota){
+      return res.status(404).json({mensage: "Nota Not found!"});
+    }
+
+    await Notas.update({
+      titulo: titulo,
+      conteudo: conteudo
+    },{
       where: {
         id: id
       }
     });  
 
-    if(!nota){
-      return res.status(404).json({mensage: "Nota Not found!"});
-    }
+    const updateNota = await Notas.findByPk(id);  
     
-    return res.status(204).send();
+    return res.status(202).json(updateNota);
   } catch (err) {
     return res.status(500).json(err);
   }
@@ -86,4 +94,5 @@ module.exports = {
   getAllNotas,
   getNota,
   deleteNota,
+  updateNota
 }
