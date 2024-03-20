@@ -29,7 +29,7 @@ async function getNota(req, res){
   try {
     const { id } = req.params;
 
-    const nota = await Notas.findOne({ where: { id: Number(id)} });  
+    const nota = await Notas.findByPk(id);  
 
     if(!nota){
       return res.status(404).json({mensage: "Nota Not found!"});
