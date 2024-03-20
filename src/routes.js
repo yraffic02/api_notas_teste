@@ -1,8 +1,9 @@
 const express = require('express');
-const { registrarNota } = require('./controllers/notasController');
+const { registerNota, getAllNota } = require('./controllers/notasController');
 const router = express.Router()
 
 
-router.post('/notas', registrarNota)
+router.post('/notas', registerNota)
+router.get('/notas', getAllNota)
 
 module.exports = router;
