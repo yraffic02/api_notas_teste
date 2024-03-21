@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const Tags = require('./Tags');
 
 module.exports = (sequelize, DataTypes) => {
   class Notas extends Model {
@@ -11,10 +12,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
       Notas.belongsToMany(models.Tags, {
         through: "NotasTags",
-        as: "tags",
+        as: "Tags",
         foreignKey: 'notaId'
       })
     }
@@ -39,5 +39,11 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'Notas',
     timestamps: false 
   });
+
+
+  /* Notas.associate = (models) => {
+    
+  } */
+
   return Notas;
 };
