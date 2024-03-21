@@ -12,6 +12,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Notas.belongsToMany(models.Tags, {
+        through: "NotasTags",
+        as: "tags",
+        foreignKey: 'notaId'
+      })
     }
   }
   Notas.init({
@@ -19,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
-      primaryKey: true
+      primaryKey: true,
     },
     titulo: {
       type: DataTypes.STRING,
