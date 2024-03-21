@@ -1,13 +1,17 @@
-const { Notas } = require("../models");
+const { Notas, Tags } = require("../models");
 
 async function registerNota(req, res){
   try {
-    const { titulo, conteudo } = req.body;
+    const { titulo, conteudo, tags } = req.body;
 
     const novaNota = await Notas.create({
       titulo,
       conteudo
-    });  
+    }); 
+    
+    if(tags && tags.length > 0){
+      novaNota.setTags(tags)
+    }
 
     return res.status(201).json(novaNota);
   } catch (err) {
@@ -17,10 +21,17 @@ async function registerNota(req, res){
 
 async function getAllNotas(req, res){
   try {
-    const notas = await Notas.findAll();  
-
+    const notas = await Notas.findAll({ include: [
+      { 
+        model: Tags, 
+        as: 'Tags',
+        through: { attributes: []}
+      }
+    ] });
+    
     return res.status(200).json(notas);
   } catch (err) {
+    console.log(err)
     return res.status(500).json(err);
   }
 }
@@ -29,7 +40,14 @@ async function getNota(req, res){
   try {
     const { id } = req.params;
 
-    const nota = await Notas.findByPk(id);  
+    const nota = await Notas.findByPk(id, {
+      include: [
+      { 
+        model: Tags, 
+        as: 'Tags',
+        through: { attributes: []}
+      }
+    ] });  
 
     if(!nota){
       return res.status(404).json({mensage: "Nota Not found!"});
@@ -44,7 +62,7 @@ async function getNota(req, res){
 async function updateNota(req, res){
   try {
     const { id } = req.params;
-    const { titulo, conteudo } = req.body;
+    const { titulo, conteudo, tags } = req.body;
 
     const nota = await Notas.findByPk(id);  
 
@@ -59,7 +77,11 @@ async function updateNota(req, res){
       where: {
         id: id
       }
-    });  
+    }); 
+    
+    if(tags && tags.length > 0){
+      novaNota.setTags(tags)
+    }
 
     const updateNota = await Notas.findByPk(id);  
     
