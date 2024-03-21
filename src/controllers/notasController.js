@@ -80,13 +80,21 @@ async function updateNota(req, res){
     }); 
     
     if(tags && tags.length > 0){
-      novaNota.setTags(tags)
+      nota.setTags(tags)
     }
 
-    const updateNota = await Notas.findByPk(id);  
+    const updateNota = await Notas.findByPk(id, {
+        include: [
+        { 
+          model: Tags, 
+          as: 'Tags',
+          through: { attributes: []}
+        }
+      ]});  
     
     return res.status(202).json(updateNota);
   } catch (err) {
+    console.log(err)
     return res.status(500).json(err);
   }
 }
