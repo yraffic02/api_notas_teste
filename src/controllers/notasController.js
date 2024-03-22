@@ -19,19 +19,38 @@ async function registerNota(req, res){
   }
 }
 
-async function getAllNotas(req, res){
+async function getAllNotas(req, res) {
   try {
-    const notas = await Notas.findAll({ include: [
-      { 
-        model: Tags, 
-        as: 'Tags',
-        through: { attributes: []}
-      }
-    ] });
-    
+    const { tagId } = req.query;
+
+    let notas;
+
+    if (tagId) {
+      notas = await Notas.findAll({
+        include: [
+          {
+            model: Tags,
+            as: 'Tags',
+            where: { id: tagId },
+            through: { attributes: [] }
+          }
+        ]
+      });
+    } else {
+      notas = await Notas.findAll({
+        include: [
+          {
+            model: Tags,
+            as: 'Tags',
+            through: { attributes: [] }
+          }
+        ]
+      });
+    }
+
     return res.status(200).json(notas);
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return res.status(500).json(err);
   }
 }
