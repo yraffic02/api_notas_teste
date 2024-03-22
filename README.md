@@ -1,5 +1,5 @@
 
-# API NESTJS XLSX
+# API REST
 
 Este projeto se refere à criação de uma API para um projeto de Desenvolvimento Full Stack com Relacionamento Muitos para Muitos.
 
